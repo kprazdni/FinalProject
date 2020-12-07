@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 
-#download data for SPY and 9 sector ETFS
+# Download data for SPY and 9 sector ETFS and create returns matrix
 tickers = ["SPY", "XLE", "XLU", "XLK", "XLB", "XLP", "XLY", "XLI", "XLV", "XLF"]
 data = yf.download(tickers, start="2010-01-01", end="2019-12-31")
 prices = DataFrame(data["Adj Close"])
@@ -15,6 +15,7 @@ log_daily_returns = np.log(prices) - np.log(prices.shift(1))
 returns = log_daily_returns.iloc[1:]
 returns_model = returns.copy()
 
+# Using a threshold of 0.5%, compute matrix of -1, 0, or 1 for negative, neutral or positive returns
 for ticker in tickers:
     for i in range(0,len(returns_model)):
         if returns_model[ticker][i] < -0.005:
